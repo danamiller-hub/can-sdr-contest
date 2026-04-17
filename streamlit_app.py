@@ -324,6 +324,11 @@ def metric_card_html(m, d):
 # ═══════════════════════════════════════════════════════════
 # SPARKLINE CHART
 # ═══════════════════════════════════════════════════════════
+def hex_to_rgba(hex_color, alpha=0.13):
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
+
 def sparkline_chart(m, d):
     active = [i for i in range(len(WEEKS)) if d["plan"][i] > 0 or d["actual"][i] > 0]
     labels  = [WEEKS[i] for i in active]
@@ -337,7 +342,7 @@ def sparkline_chart(m, d):
         mode="lines+markers",
         line=dict(color=m["color"], width=2.5),
         fill="tozeroy",
-        fillcolor=m["color"] + "22",
+        fillcolor=hex_to_rgba(m["color"]),
         marker=dict(size=6),
     ))
     fig.add_trace(go.Scatter(
